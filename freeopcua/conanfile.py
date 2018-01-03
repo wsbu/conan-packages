@@ -28,7 +28,7 @@ class freeopcuaConan(ConanFile):
         # Without this, CMake won't know how to find the dependencies that Conan is trying to inject
         tools.replace_in_file('freeopcua/CMakeLists.txt', 'project(freeopcua)',
                               '''project(freeopcua)
-include("${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
+include("${PROJECT_BINARY_DIR}/conanbuildinfo.cmake")
 conan_basic_setup(TARGETS)''')
 
     def build(self):
