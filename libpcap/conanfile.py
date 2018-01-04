@@ -18,8 +18,11 @@ class libpcapConan(ConanFile):
     def build(self):
         env = AutoToolsBuildEnvironment(self)
 
-        env.configure(configure_dir=(os.path.join(self.source_folder, 'libpcap')),
-                      args=['--prefix', self.package_folder])
+        args = [
+            '--prefix', self.package_folder,
+            '--with-pcap=' + self.settings.get_safe('os').lower()
+        ]
+        env.configure(configure_dir=(os.path.join(self.source_folder, 'libpcap')), args=args)
         env.make(args=['-C', self.build_folder])
         env.make(args=['install'])
 
