@@ -29,7 +29,7 @@ class freeopcuaConan(ConanFile):
         tools.replace_in_file('freeopcua/CMakeLists.txt', 'project(freeopcua)',
                               '''project(freeopcua)
 include("${PROJECT_BINARY_DIR}/conanbuildinfo.cmake")
-conan_basic_setup(TARGETS)''')
+conan_basic_setup()''')
 
     def build(self):
         definitions = {
@@ -50,3 +50,4 @@ conan_basic_setup(TARGETS)''')
             'opcuaprotocol',
             'opcuacore'
         ]
+        self.cpp_info.libdirs = ['lib', 'lib/static']
