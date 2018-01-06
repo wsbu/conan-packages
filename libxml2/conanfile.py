@@ -1,5 +1,7 @@
 import os
-from conans import ConanFile, CMake, tools, AutoToolsBuildEnvironment
+from ftplib import FTP
+
+from conans import ConanFile, tools, AutoToolsBuildEnvironment
 
 
 class libxml2Conan(ConanFile):
@@ -15,21 +17,29 @@ class libxml2Conan(ConanFile):
     default_options = 'shared=True', 'python=False'
     generators = 'cmake'
 
+    FOLDER = name + '-' + version
+    ARCHIVE = FOLDER + '.tar.gz'
+
     def source(self):
-        self.run('git clone --depth=1 https://github.com/GNOME/libxml2 -b v%s' % self.version)
+        ftp = FTP('xmlsoft.org')
+        try:
+            ftp.login()
+            with open(self.ARCHIVE, 'wb') as f:
+                ftp.retrbinary('RETR %s/%s' % (self.name, self.ARCHIVE), f.write)
+        finally:
+            ftp.close()
+        tools.untargz(self.ARCHIVE)
+        os.remove(self.ARCHIVE)
 
     def build(self):
         env = AutoToolsBuildEnvironment(self)
-
-        src = os.path.join(self.source_folder, 'libxml2')
-        self.run('env NOCONFIGURE=1 sh autogen.sh', cwd=src)
 
         args = ['--prefix', self.package_folder]
         if self.options.python:
             args.append('--with-python')
         else:
             args.append('--without-python')
-        env.configure(configure_dir=src, args=args)
+        env.configure(configure_dir=self.FOLDER, args=args)
         env.make(args=['-C', self.build_folder])
         env.make(args=['install'])
 

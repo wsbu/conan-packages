@@ -9,6 +9,7 @@
 """
 
 import os
+import sys
 import subprocess
 import typing
 
@@ -31,6 +32,7 @@ def run() -> None:
 def execute(args: typing.List, cwd: str, echo: bool=True) -> None:
     if echo:
         print('cd ' + cwd + ' && ' + ' '.join(args))
+        sys.stdout.flush()
     subprocess.check_call(args, cwd=cwd)
 
 

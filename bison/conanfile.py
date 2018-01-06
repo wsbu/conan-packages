@@ -16,7 +16,7 @@ class BisonConan(ConanFile):
     def source(self):
         download('http://ftp.gnu.org/gnu/bison/' + self.ARCHIVE, self.ARCHIVE)
         untargz(self.ARCHIVE)
-        os.unlink(self.ARCHIVE)
+        os.remove(self.ARCHIVE)
 
     def build(self):
         env = AutoToolsBuildEnvironment(self)
