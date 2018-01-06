@@ -1,10 +1,11 @@
 import os
-from conans import ConanFile, CMake, tools, AutoToolsBuildEnvironment
+
+from conans import ConanFile, AutoToolsBuildEnvironment
 
 
 class libpcapConan(ConanFile):
     name = 'libpcap'
-    version = '1.18.0'
+    version = '1.8.0'
     description = 'the LIBpcap interface to various kernel packet capture mechanism'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'BSD'
