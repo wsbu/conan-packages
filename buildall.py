@@ -31,7 +31,7 @@ def run() -> None:
 def execute(args: typing.List, cwd: str, echo: bool=True) -> None:
     if echo:
         print('cd ' + cwd + ' && ' + ' '.join(args))
-    # subprocess.check_call(args, cwd=cwd)
+    subprocess.check_call(args, cwd=cwd)
 
 
 run()
