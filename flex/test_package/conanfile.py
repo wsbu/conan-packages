@@ -19,5 +19,5 @@ class TestFlexConan(ConanFile):
         test_exe = os.path.join(self.build_folder, 'bin', 'test-flex')
         self.output.info('Running ' + test_exe)
         p = subprocess.Popen([test_exe], stdin=subprocess.PIPE)
-        p.communicate(input_text)
+        p.communicate(input_text.encode())
         assert 0 == p.returncode, 'Test failed with non-zero exit code'

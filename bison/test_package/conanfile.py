@@ -17,5 +17,5 @@ class TestBisonConan(ConanFile):
         test_exe = os.path.join(self.build_folder, 'bin', 'test-bison')
         self.output.info('Running ' + test_exe)
         p = subprocess.Popen([test_exe], stdin=subprocess.PIPE)
-        p.communicate("1 + 2* 3\n")
+        p.communicate("1 + 2* 3\n".encode())
         assert 0 == p.returncode, 'Test failed with non-zero exit code'
