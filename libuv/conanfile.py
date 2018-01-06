@@ -12,6 +12,8 @@ class libuvConan(ConanFile):
     options = {'shared': [True, False]}
     default_options = 'shared=True'
 
+    requires = 'libtool/2.4.6@wsbu/testing'
+
     def source(self):
         self.run('git clone --depth=1 https://github.com/libuv/libuv -b v1.18.0')
 
@@ -19,6 +21,7 @@ class libuvConan(ConanFile):
         env = AutoToolsBuildEnvironment(self)
 
         src = os.path.join(self.source_folder, 'libuv')
+        os.environ['PATH'] += os.pathsep + os.pathsep.join(self.deps_cpp_info.bindirs)
         self.run('sh {0}/autogen.sh'.format(src))
         env.configure(configure_dir=src, args=['--prefix', self.package_folder])
         env.make(args=['-C', self.build_folder])
