@@ -13,6 +13,8 @@ class libpcapConan(ConanFile):
     default_options = 'shared=True'
     generators = 'cmake'
 
+    requires = 'flex/2.6.3@wsbu/testing'
+
     def source(self):
         self.run('git clone --depth=1 https://github.com/the-tcpdump-group/libpcap -b libpcap-1.8.1')
 
@@ -23,6 +25,7 @@ class libpcapConan(ConanFile):
             '--prefix', self.package_folder,
             '--with-pcap=' + self.settings.get_safe('os').lower()
         ]
+        os.environ['PATH'] += os.pathsep + os.pathsep.join(self.deps_cpp_info.bindirs)
         env.configure(configure_dir=(os.path.join(self.source_folder, 'libpcap')), args=args)
         env.make(args=['-C', self.build_folder])
         env.make(args=['install'])
