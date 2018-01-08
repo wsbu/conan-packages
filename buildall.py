@@ -25,7 +25,7 @@ def run() -> None:
         completed_process = subprocess.run(['conan', 'info', d, '--only', 'None'], stdout=subprocess.PIPE)
         package = completed_process.stdout.decode().split()[0].split('@')[0]
 
-        execute(['conan', 'remove', package + '@' + CHANNEL])
+        execute(['conan', 'remove', '--force', package + '@' + CHANNEL])
         execute(['conan', 'create', CHANNEL, '--build', 'missing', '--update', '--cwd', d])
         execute(['conan', 'upload', '--force', '--confirm', '--remote', 'ci', '--all', package + '@' + CHANNEL])
 
