@@ -10,7 +10,7 @@ class FlexConan(ConanFile):
     license = 'GNU General Public License: https://www.gnu.org/licenses/gpl.html'
     settings = 'os', 'compiler', 'build_type', 'arch'
 
-    requires = "bison/3.0.4@wsbu/testing"
+    requires = "bison/3.0.4@wsbu/stable"
 
     FOLDER = 'flex-' + version
     ARCHIVE = FOLDER + '.tar.gz'

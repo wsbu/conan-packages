@@ -13,7 +13,7 @@ class libpcapConan(ConanFile):
     default_options = 'shared=True'
     generators = 'cmake'
 
-    requires = 'flex/2.6.3@wsbu/testing'
+    requires = 'flex/2.6.3@wsbu/stable'
 
     def source(self):
         self.run('git clone --depth=1 https://github.com/the-tcpdump-group/libpcap -b libpcap-1.8.1')

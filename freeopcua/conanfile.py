@@ -20,7 +20,7 @@ class freeopcuaConan(ConanFile):
                       'build_server=True'
     generators = 'cmake'
 
-    requires = 'Boost/1.64.0@wsbu/testing', 'googletest/1.8.0@wsbu/testing'
+    requires = 'Boost/1.64.0@wsbu/stable', 'googletest/1.8.0@wsbu/stable'
 
     def source(self):
         self.run('git clone --depth=1 https://github.com/FreeOpcUa/freeopcua')

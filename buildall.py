@@ -22,7 +22,7 @@ def run() -> None:
     conan_dirs = [d for d in directories if os.path.exists(os.path.join(d, 'conanfile.py'))]
 
     for d in conan_dirs:
-        execute(['conan', 'create', CHANNEL, '--build', 'missing'], cwd=d)
+        execute(['conan', 'create', CHANNEL, '--build', 'missing', '--update'], cwd=d)
 
         completed_process = subprocess.run(['conan', 'info', d, '--only', 'None'], stdout=subprocess.PIPE)
         package = completed_process.stdout.decode().split()[0].split('@')[0]
