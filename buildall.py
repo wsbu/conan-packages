@@ -19,21 +19,22 @@ CHANNEL = 'wsbu/stable'
 def run() -> None:
     root = os.path.dirname(__file__)
     directories = [os.path.join(root, d) for d in os.listdir(root) if os.path.isdir(d)]
-    conan_dirs = [d for d in directories if os.path.exists(os.path.join(d, 'conanfile.py'))]
+    conan_dirs = [os.path.abspath(d) for d in directories if os.path.exists(os.path.join(d, 'conanfile.py'))]
 
     for d in conan_dirs:
-        execute(['conan', 'create', CHANNEL, '--build', 'missing', '--update'], cwd=d)
-
         completed_process = subprocess.run(['conan', 'info', d, '--only', 'None'], stdout=subprocess.PIPE)
         package = completed_process.stdout.decode().split()[0].split('@')[0]
-        execute(['conan', 'upload', '--force', '--confirm', '--remote', 'ci', package + '@' + CHANNEL], cwd=d)
+
+        execute(['conan', 'remove', package + '@' + CHANNEL])
+        execute(['conan', 'create', CHANNEL, '--build', 'missing', '--update', '--cwd', d])
+        execute(['conan', 'upload', '--force', '--confirm', '--remote', 'ci', '--all', package + '@' + CHANNEL])
 
 
-def execute(args: typing.List, cwd: str, echo: bool=True) -> None:
+def execute(args: typing.List, echo: bool=True) -> None:
     if echo:
-        print('cd ' + cwd + ' && ' + ' '.join(args))
+        print(' '.join(args))
         sys.stdout.flush()
-    subprocess.check_call(args, cwd=cwd)
+    subprocess.check_call(args)
 
 
 run()
