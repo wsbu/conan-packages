@@ -34,8 +34,9 @@ conan_basic_setup()''')
         cmake.build()
         cmake.install()
 
-        # Exclusion due to https://github.com/google/googletest/issues/845
-        self.run('ctest --output-on-failure --exclude-regex gtest_catch_exceptions_test', cwd=self.build_folder)
+        if not tools.cross_building(self.settings):
+            # Exclusion due to https://github.com/google/googletest/issues/845
+            self.run('ctest --output-on-failure --exclude-regex gtest_catch_exceptions_test', cwd=self.build_folder)
 
     def package_info(self):
         self.cpp_info.libs = [
