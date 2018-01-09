@@ -8,8 +8,11 @@ class CryptoPPConan(ConanFile):
     description = "Google's C++ test framework."
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'BSD 3-clause "New" or "Revised" License'
-    options = {'shared': [True, False]}
-    default_options = 'shared=True'
+    options = {
+        'shared': [True, False],
+        'run_tests': [True, False]
+    }
+    default_options = 'shared=True', 'run_tests=False'
     generators = 'cmake'
 
     def source(self):
@@ -27,7 +30,7 @@ conan_basic_setup()''')
     def build(self):
         cmake = CMake(self)
 
-        if tools.cross_building(self.settings):
+        if tools.cross_building(self.settings) or not self.options.run_tests:
             extra_definitions = {}
         else:
             extra_definitions = {
@@ -38,7 +41,7 @@ conan_basic_setup()''')
         cmake.build()
         cmake.install()
 
-        if not tools.cross_building(self.settings):
+        if not tools.cross_building(self.settings) and self.options.run_tests:
             # Exclusion due to https://github.com/google/googletest/issues/845
             self.run('ctest --output-on-failure --exclude-regex gtest_catch_exceptions_test', cwd=self.build_folder)
 
