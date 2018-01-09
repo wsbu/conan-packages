@@ -27,10 +27,14 @@ conan_basic_setup()''')
     def build(self):
         cmake = CMake(self)
 
-        cmake.configure(source_dir='googletest', defs={
-            'gtest_build_tests': 'TRUE',
-            'gmock_build_tests': 'TRUE'
-        })
+        if tools.cross_building(self.settings):
+            extra_definitions = {}
+        else:
+            extra_definitions = {
+                'gtest_build_tests': 'TRUE',
+                'gmock_build_tests': 'TRUE'
+            }
+        cmake.configure(source_dir='googletest', defs=extra_definitions)
         cmake.build()
         cmake.install()
 
