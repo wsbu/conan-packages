@@ -12,8 +12,6 @@ class libuvConan(ConanFile):
     options = {'shared': [True, False]}
     default_options = 'shared=True'
 
-    requires = 'libtool/2.4.6@wsbu/stable'
-
     def source(self):
         self.run('git clone --depth=1 https://github.com/libuv/libuv -b v1.18.0')
 
