@@ -1,4 +1,4 @@
-from conans import ConanFile, CMake
+from conans import ConanFile, CMake, tools
 
 
 class LibPcapTestConan(ConanFile):
@@ -11,7 +11,10 @@ class LibPcapTestConan(ConanFile):
         cmake.build()
 
     def test(self):
-        self.run('ctest --output-on-failure')
+        if tools.cross_building(self.settings):
+            self.output.info('This test always fails when cross-compiling. Skipping test.')
+        else:
+            self.run('ctest --output-on-failure')
 
     def configure(self):
         del self.settings.compiler.libcxx
