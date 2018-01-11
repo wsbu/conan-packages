@@ -3,7 +3,7 @@ from conans import ConanFile, CMake, tools
 
 class freeopcuaConan(ConanFile):
     name = 'freeopcua'
-    version = '1.8.0'
+    version = '0.0.1'
     url = 'http://freeopcua.github.io/'
     description = 'Open Source C++ OPC-UA Server and Client Library'
     settings = 'os', 'compiler', 'build_type', 'arch'
