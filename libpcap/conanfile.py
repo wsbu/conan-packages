@@ -23,14 +23,14 @@ class libpcapConan(ConanFile):
         env = AutoToolsBuildEnvironment(self)
 
         args = [
-            '--prefix', self.package_folder,
+            '--prefix', '/',
             '--with-pcap=' + self.settings.get_safe('os').lower(),
             '--with%s-libnl' % ('' if self.options.with_libnl else 'out')
         ]
         os.environ['PATH'] += os.pathsep + os.pathsep.join(self.deps_cpp_info.bindirs)
         env.configure(configure_dir=(os.path.join(self.source_folder, 'libpcap')), args=args)
-        env.make(args=['-C', self.build_folder])
-        env.make(args=['install'])
+        env.make()
+        env.make(args=['DESTDIR=' + self.package_folder, 'install'])
 
     def package_info(self):
         self.cpp_info.libs = [

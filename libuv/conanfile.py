@@ -21,9 +21,9 @@ class libuvConan(ConanFile):
         src = os.path.join(self.source_folder, 'libuv')
         os.environ['PATH'] += os.pathsep + os.pathsep.join(self.deps_cpp_info.bindirs)
         self.run('sh {0}/autogen.sh'.format(src))
-        env.configure(configure_dir=src, args=['--prefix', self.package_folder])
-        env.make(args=['-C', self.build_folder])
-        env.make(args=['install'])
+        env.configure(configure_dir=src, args=['--prefix', '/'])
+        env.make()
+        env.make(args=['DESTDIR=' + self.package_folder, 'install'])
 
     def package_info(self):
         self.cpp_info.libs = [

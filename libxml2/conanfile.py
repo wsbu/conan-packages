@@ -34,14 +34,14 @@ class libxml2Conan(ConanFile):
     def build(self):
         env = AutoToolsBuildEnvironment(self)
 
-        args = ['--prefix', self.package_folder]
+        args = ['--prefix', '/']
         if self.options.python:
             args.append('--with-python')
         else:
             args.append('--without-python')
         env.configure(configure_dir=self.FOLDER, args=args)
-        env.make(args=['-C', self.build_folder])
-        env.make(args=['install'])
+        env.make()
+        env.make(args=['DESTDIR=' + self.package_folder, 'install'])
 
         # What the crap is wrong with libxml2???
         bad_root = os.path.join(self.package_folder, 'include', 'libxml2')
