@@ -22,6 +22,9 @@ class freeopcuaConan(ConanFile):
 
     requires = 'Boost/1.64.0@wsbu/stable', ('googletest/1.8.0@wsbu/stable', 'private')
 
+    def configure(self):
+        self.options['Boost'].shared = self.options.shared
+
     def source(self):
         self.run('git clone --depth=1 https://github.com/FreeOpcUa/freeopcua')
 
