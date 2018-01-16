@@ -14,16 +14,13 @@ class freeopcuaConan(ConanFile):
         'build_client': [True, False],
         'build_server': [True, False]
     }
-    default_options = 'shared=False', \
+    default_options = 'shared=True', \
                       'build_python=False', \
                       'build_client=False', \
                       'build_server=True'
     generators = 'cmake'
 
     requires = 'Boost/1.64.0@wsbu/stable', ('googletest/1.8.0@wsbu/stable', 'private')
-
-    def configure(self):
-        self.options['Boost'].shared = True
 
     def source(self):
         self.run('git clone --depth=1 https://github.com/FreeOpcUa/freeopcua')
