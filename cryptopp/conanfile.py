@@ -12,10 +12,9 @@ class CryptoPPConan(ConanFile):
     license = 'Boost Software License 1.0'
     generators = 'cmake'
     options = {
-        'shared': [True, False],
         'cxx11': [True, False],
     }
-    default_options = 'shared=True', 'cxx11=True'
+    default_options = 'cxx11=True'
 
     ARCHIVE_BASENAME = name.upper() + '_' + version.replace('.', '_')
     FOLDER = name + '-' + ARCHIVE_BASENAME
