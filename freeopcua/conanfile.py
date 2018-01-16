@@ -20,7 +20,10 @@ class freeopcuaConan(ConanFile):
                       'build_server=True'
     generators = 'cmake'
 
-    requires = 'Boost/1.64.0@wsbu/stable', 'googletest/1.8.0@wsbu/stable'
+    requires = 'Boost/1.64.0@wsbu/stable', ('googletest/1.8.0@wsbu/stable', 'private')
+
+    def configure(self):
+        self.options['Boost'].shared = True
 
     def source(self):
         self.run('git clone --depth=1 https://github.com/FreeOpcUa/freeopcua')
@@ -31,6 +34,9 @@ class freeopcuaConan(ConanFile):
 include("${PROJECT_BINARY_DIR}/conanbuildinfo.cmake")
 conan_basic_setup()''')
 
+        # Installer is broken... patch it
+        tools.replace_in_file('freeopcua/CMakeLists.txt', 'DESTINATION "${CMAKE_INSTALL_PREFIX}/', 'DESTINATION "')
+
     def build(self):
         definitions = {
             'BUILD_PYTHON': 'ON' if self.options.build_python else 'OFF',
@@ -39,9 +45,10 @@ conan_basic_setup()''')
         }
 
         cmake = CMake(self)
+        cmake.definitions['CMAKE_INSTALL_PREFIX'] = '/'
         cmake.configure(source_dir='freeopcua', defs=definitions)
         cmake.build()
-        cmake.install()
+        cmake.install(args=['--', 'DESTDIR=' + self.package_folder])
 
     def package_info(self):
         self.cpp_info.libs = [
