@@ -34,10 +34,9 @@ conan_basic_setup()''')
 
     def build(self):
         cmake = CMake(self)
-        cmake.definitions['CMAKE_INSTALL_PREFIX'] = '/'
         cmake.configure(source_dir='cryptopp-CRYPTOPP_5_6_5')
         cmake.build()
-        cmake.install(args=['--', 'DESTDIR=' + self.package_folder])
+        cmake.install()
 
     def package_info(self):
         self.cpp_info.libs = ['cryptopp']
