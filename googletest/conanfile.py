@@ -29,6 +29,7 @@ conan_basic_setup()''')
 
     def build(self):
         cmake = CMake(self)
+        cmake.definitions['CMAKE_INSTALL_PREFIX'] = '/'
 
         if tools.cross_building(self.settings) or not self.options.run_tests:
             extra_definitions = {}
@@ -39,11 +40,10 @@ conan_basic_setup()''')
             }
         cmake.configure(source_dir='googletest', defs=extra_definitions)
         cmake.build()
-        cmake.install()
-
         if not tools.cross_building(self.settings) and self.options.run_tests:
             # Exclusion due to https://github.com/google/googletest/issues/845
             self.run('ctest --output-on-failure --exclude-regex gtest_catch_exceptions_test', cwd=self.build_folder)
+        cmake.install(args=['--', 'DESTDIR=' + self.package_folder])
 
     def package_info(self):
         self.cpp_info.libs = [
