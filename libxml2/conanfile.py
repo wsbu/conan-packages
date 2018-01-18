@@ -6,8 +6,8 @@ from conans import ConanFile, tools, AutoToolsBuildEnvironment
 
 class libxml2Conan(ConanFile):
     name = 'libxml2'
-    version = '2.9.7'
-    url = ''
+    version = '2.9.7+1'
+    url = 'https://github.com/wsbu/conan-packages'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'MIT'
     options = {
@@ -15,9 +15,8 @@ class libxml2Conan(ConanFile):
         'python': [True, False]
     }
     default_options = 'shared=True', 'python=False'
-    generators = 'cmake'
 
-    FOLDER = name + '-' + version
+    FOLDER = name + '-' + version.split('+')[0]
     ARCHIVE = FOLDER + '.tar.gz'
 
     def source(self):
@@ -32,16 +31,24 @@ class libxml2Conan(ConanFile):
         os.remove(self.ARCHIVE)
 
     def build(self):
-        env = AutoToolsBuildEnvironment(self)
+        source_dir = os.path.join(self.build_folder, self.FOLDER)
+        build_dir = os.path.join(self.build_folder, 'build')
+        os.mkdir(build_dir)
 
         args = ['--prefix', '/']
         if self.options.python:
             args.append('--with-python')
         else:
             args.append('--without-python')
-        env.configure(configure_dir=self.FOLDER, args=args)
-        env.make()
-        env.make(args=['DESTDIR=' + self.package_folder, 'install'])
+
+        env = AutoToolsBuildEnvironment(self)
+        with tools.chdir(build_dir):
+            env.configure(configure_dir=source_dir, args=args)
+        env.make(args=['-C', build_dir])
+
+    def package(self):
+        build_dir = os.path.join(self.build_folder, 'build')
+        self.run('make -C {0} DESTDIR={1} install'.format(build_dir, self.package_folder))
 
         # What the crap is wrong with libxml2???
         bad_root = os.path.join(self.package_folder, 'include', 'libxml2')

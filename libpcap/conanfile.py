@@ -1,11 +1,12 @@
 import os
 
-from conans import ConanFile, AutoToolsBuildEnvironment
+from conans import ConanFile, AutoToolsBuildEnvironment, tools
 
 
 class libpcapConan(ConanFile):
     name = 'libpcap'
-    version = '1.8.1'
+    version = '1.8.1+1'
+    url = 'https://github.com/wsbu/conan-packages'
     description = 'the LIBpcap interface to various kernel packet capture mechanism'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'BSD'
@@ -17,20 +18,28 @@ class libpcapConan(ConanFile):
     generators = 'cmake'
 
     def source(self):
-        self.run('git clone --depth=1 https://github.com/the-tcpdump-group/libpcap -b libpcap-%s' % self.version)
+        version = self.version.split('+')[0]
+        self.run('git clone --depth=1 https://github.com/the-tcpdump-group/libpcap -b libpcap-%s' % version)
 
     def build(self):
-        env = AutoToolsBuildEnvironment(self)
+        source_dir = os.path.join(self.build_folder, 'libpcap')
+        build_dir = os.path.join(self.build_folder, 'build')
+        os.mkdir(build_dir)
 
         args = [
             '--prefix', '/',
             '--with-pcap=' + self.settings.get_safe('os').lower(),
             '--with%s-libnl' % ('' if self.options.with_libnl else 'out')
         ]
-        os.environ['PATH'] += os.pathsep + os.pathsep.join(self.deps_cpp_info.bindirs)
-        env.configure(configure_dir=(os.path.join(self.source_folder, 'libpcap')), args=args)
-        env.make()
-        env.make(args=['DESTDIR=' + self.package_folder, 'install'])
+
+        env = AutoToolsBuildEnvironment(self)
+        with tools.chdir(build_dir):
+            env.configure(configure_dir=source_dir, args=args)
+        env.make(args=['-C', build_dir])
+
+    def package(self):
+        build_dir = os.path.join(self.build_folder, 'build')
+        self.run('make -C {0} DESTDIR={1} install'.format(build_dir, self.package_folder))
 
     def package_info(self):
         self.cpp_info.libs = [
