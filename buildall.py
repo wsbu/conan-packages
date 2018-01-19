@@ -45,7 +45,7 @@ def execute(args, echo=True):
     if echo:
         print(' '.join(args))
         sys.stdout.flush()
-    # subprocess.check_call(args)
+    subprocess.check_call(args)
 
 
 run()
