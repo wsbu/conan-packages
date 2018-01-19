@@ -28,7 +28,9 @@ def run():
         if 0 != return_code:
             raise Exception('Process exited with non-zero return code: ' + return_code)
         else:
-            package = p.stdout.read().decode().split()[0].split('@')[0]
+            lines = p.stdout.read().decode().split()
+            this_project = [line for line in lines if line.endswith('@PROJECT')][0]
+            package = this_project.split('@')[0]
 
             execute(['conan', 'create', d, CHANNEL, '--build', 'missing', '--build', 'outdated', '--update'])
             execute(['conan', 'upload', '--force', '--confirm', '--remote', 'ci', '--all', package + '@' + CHANNEL])
@@ -43,7 +45,7 @@ def execute(args, echo=True):
     if echo:
         print(' '.join(args))
         sys.stdout.flush()
-    subprocess.check_call(args)
+    # subprocess.check_call(args)
 
 
 run()
