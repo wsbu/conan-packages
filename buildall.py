@@ -8,9 +8,10 @@
 @description:
 """
 
+import json
 import os
-import sys
 import subprocess
+import sys
 
 CHANNEL = 'wsbu/stable'
 
@@ -26,14 +27,34 @@ def run():
         p = subprocess.Popen(['conan', 'info', d, '--only', 'None'], stdout=subprocess.PIPE)
         return_code = p.wait()
         if 0 != return_code:
-            raise Exception('Process exited with non-zero return code: ' + return_code)
+            if p.stdout:
+                print(p.stdout.read().decode())
+            if p.stderr:
+                sys.stderr.write(p.stderr.read().decode())
+            raise Exception('Process exited with non-zero return code: {0}'.format(return_code))
         else:
             lines = p.stdout.read().decode().split()
             this_project = [line for line in lines if line.endswith('@PROJECT')][0]
             package = this_project.split('@')[0]
 
-            execute(['conan', 'create', d, CHANNEL, '--build', 'missing', '--build', 'outdated', '--update'])
+            execute(
+                ['conan', 'create', d, CHANNEL, '--build', 'missing', '--build', 'outdated', '--update'] +
+                get_options(d)
+            )
             execute(['conan', 'upload', '--force', '--confirm', '--remote', 'ci', '--all', package + '@' + CHANNEL])
+
+
+def get_options(d):
+    options_filename = os.path.join(d, 'options.json')
+    if os.path.exists(options_filename):
+        with open(options_filename, 'r') as options_file:
+            json_content = json.loads(options_file.read())
+        extra_args = []
+        for k, v in json_content.items():
+            extra_args += ['--options', '{0}={1}'.format(k, v)]
+        return extra_args
+    else:
+        return []
 
 
 def execute(args, echo=True):
