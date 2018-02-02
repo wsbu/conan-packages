@@ -97,7 +97,9 @@ class BashConan(ConanFile):
         env = AutoToolsBuildEnvironment(self)
         with tools.chdir(self.folder):
             env.configure(configure_dir=self.folder, args=args)
-            env.make()
+            # This old version of bash has a race condition when built with multiple CPU cores.
+            # Don't do it...
+            env.make(args=['-j1'])
 
     def package(self):
         src_bash_exe = os.path.join(self.folder, 'bash')
