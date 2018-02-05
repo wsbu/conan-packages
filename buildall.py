@@ -33,14 +33,16 @@ def run():
     directories = [os.path.join(root, d) for d in os.listdir(root) if os.path.isdir(d)]
     conan_dirs = [os.path.abspath(d) for d in directories if os.path.exists(os.path.join(d, 'conanfile.py'))]
 
-    conan_exe_args = ['python', '-u', which('conan')]
+    conan_exe_args = get_conan_exe_args()
 
     for d in conan_dirs:
         print('#' * 80)
-        print('### Building {0}'.format(d))
+        print('### Building {0}'.format(os.path.basename(d)))
         print('#' * 80)
 
-        p = subprocess.Popen(conan_exe_args + ['info', d, '--only', 'None'], stdout=subprocess.PIPE)
+        args = conan_exe_args + ['info', d, '--only', 'None']
+        print(args)
+        p = subprocess.Popen(args, stdout=subprocess.PIPE)
         return_code = p.wait()
         if 0 != return_code:
             if p.stdout:
@@ -57,6 +59,13 @@ def run():
                     + get_options(d))
             execute(conan_exe_args + ['upload', '--force', '--confirm', '--remote', 'ci', '--all', package + '@' +
                                       CHANNEL])
+
+
+def get_conan_exe_args():
+    conan_exe = which('conan')
+    with open(conan_exe, 'r') as f:
+        first_line = f.readline().strip()
+        return [first_line[2:], '-u', conan_exe]
 
 
 def get_options(d):
