@@ -59,7 +59,7 @@ class libxml2Conan(ConanFile):
         env = AutoToolsBuildEnvironment(self)
         with tools.chdir(build_dir):
             env.configure(configure_dir=source_dir, args=args)
-        env.make(args=['-C', build_dir, 'V=1'])
+        env.make(args=['-C', build_dir])
 
     def package(self):
         build_dir = os.path.join(self.build_folder, 'build')
