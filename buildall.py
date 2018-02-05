@@ -37,7 +37,7 @@ def run():
 
     for d in conan_dirs:
         print('#' * 80)
-        print('### Building {0}')
+        print('### Building {0}'.format(d))
         print('#' * 80)
 
         p = subprocess.Popen(conan_exe_args + ['info', d, '--only', 'None'], stdout=subprocess.PIPE)
