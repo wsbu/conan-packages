@@ -6,18 +6,27 @@ from conans import ConanFile, tools, AutoToolsBuildEnvironment
 
 class libxml2Conan(ConanFile):
     name = 'libxml2'
-    version = '2.9.7+1'
+    version = '2.9.7+2'
     url = 'https://github.com/wsbu/conan-packages'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'MIT'
     options = {
         'shared': [True, False],
-        'python': [True, False]
+        'with_python': [True, False],
+        'with_zlib': [True, False]
     }
-    default_options = 'shared=True', 'python=False'
+    default_options = 'shared=True', 'with_python=False', 'with_zlib=True'
 
     FOLDER = name + '-' + version.split('+')[0]
     ARCHIVE = FOLDER + '.tar.gz'
+
+    def configure(self):
+        del self.settings.compiler.libcxx
+
+        if self.options.with_zlib:
+            self.requires('zlib/1.2.11@conan/stable')
+
+        super(libxml2Conan, self).configure()
 
     def source(self):
         ftp = FTP('xmlsoft.org')
@@ -35,16 +44,22 @@ class libxml2Conan(ConanFile):
         build_dir = os.path.join(self.build_folder, 'build')
         os.mkdir(build_dir)
 
-        args = ['--prefix', '/']
-        if self.options.python:
-            args.append('--with-python')
+        args = [
+            '--prefix', '/',
+            '--with-python=yes' if self.options.with_python else '--without-python',
+            '--with-zlib=yes' if self.options.with_zlib else '--without-zlib'
+        ]
+        if self.options.shared:
+            args.append('--enable-shared=yes')
+            args.append('--enable-static=no')
         else:
-            args.append('--without-python')
+            args.append('--enable-shared=no')
+            args.append('--enable-static=yes')
 
         env = AutoToolsBuildEnvironment(self)
         with tools.chdir(build_dir):
             env.configure(configure_dir=source_dir, args=args)
-        env.make(args=['-C', build_dir])
+        env.make(args=['-C', build_dir, 'V=1'])
 
     def package(self):
         build_dir = os.path.join(self.build_folder, 'build')
@@ -63,7 +78,3 @@ class libxml2Conan(ConanFile):
         self.cpp_info.libs = [
             'xml2'
         ]
-
-    def configure(self):
-        del self.settings.compiler.libcxx
-        super(libxml2Conan, self).configure()
