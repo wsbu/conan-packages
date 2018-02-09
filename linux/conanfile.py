@@ -7,7 +7,7 @@ from conans import ConanFile, tools
 
 class LinuxConan(ConanFile):
     name = 'linux'
-    version = '4.4.36+1'
+    version = '4.4.36+2'
     license = 'GNU GPL'
     url = 'https://github.com/wsbu/conan-packages'
     description = "Kernel modules and headers (and maybe source)"
@@ -39,11 +39,6 @@ class LinuxConan(ConanFile):
         platform = self.settings.get_safe('platform')
         common_make_flags = self._get_make_flags()
 
-        # Before compiling everything, copy the source code into the package
-        if self.options.install_source:
-            shutil.copytree(os.path.join(self.source_folder, self.relative_folder),
-                            os.path.join(self.package_folder, 'usr/src/kernels', kernel_version))
-
         self.run('make -C {0} -j{1} {2} {3}_defconfig'.format(self.folder, cpu_count, common_make_flags, platform))
         load_address_arg = 'LOADADDR=%s' % (self.LOAD_ADDR_MAP[platform] if platform not in ['x86', 'x86_64'] else '')
 
@@ -52,13 +47,17 @@ class LinuxConan(ConanFile):
                                                                load_address_arg))
         self.run('make -C {0} -j{1} {2} modules'.format(self.folder, cpu_count, common_make_flags))
 
+        # After compiling everything, copy the source code and object files into the package.
+        if self.options.install_source:
+            shutil.copytree(os.path.join(self.source_folder, self.relative_folder),
+                            os.path.join(self.package_folder, 'usr/src/kernels', kernel_version))
+
     def package(self):
         kernel_version = self._check_version()
         cpu_count = tools.cpu_count()
         arch = self.settings.get_safe('arch')
         common_make_flags = self._get_make_flags()
 
-        self.run('env')
         self.run('make -C {0} -j{1} {2} INSTALL_HDR_PATH={3} INSTALL_MOD_PATH={3} headers_install modules_install'
                  .format(self.folder, cpu_count, common_make_flags, self.package_folder))
 
