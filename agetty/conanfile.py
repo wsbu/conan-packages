@@ -6,8 +6,8 @@ from conans import ConanFile, tools
 
 class AgettyConan(ConanFile):
     name = 'agetty'
-    version = '1.29+1'
-    short_version = version.split('+')[0]
+    version = '1.29-1'
+    short_version = version.split('-')[0]
     url = 'https://github.com/wsbu/conan-packages'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'GNU'

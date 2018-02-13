@@ -4,7 +4,7 @@ from conans import ConanFile, CMake, tools
 
 class CryptoPPConan(ConanFile):
     name = 'googletest'
-    version = '1.8.0+1'
+    version = '1.8.0-1'
     url = 'https://github.com/wsbu/conan-packages'
     description = "Google's C++ test framework."
     settings = 'os', 'compiler', 'build_type', 'arch'

@@ -4,7 +4,7 @@ from conans import ConanFile, CMake, tools
 
 class freeopcuaConan(ConanFile):
     name = 'freeopcua'
-    version = '0.0.1+2'
+    version = '0.0.1-1'
     url = 'https://github.com/wsbu/conan-packages'
     description = 'Open Source C++ OPC-UA Server and Client Library'
     settings = 'os', 'compiler', 'build_type', 'arch'
@@ -21,7 +21,7 @@ class freeopcuaConan(ConanFile):
                       'build_server=True'
     generators = 'cmake'
 
-    requires = 'Boost/1.64.0+1@wsbu/stable', ('googletest/1.8.0+1@wsbu/stable', 'private')
+    requires = 'Boost/1.64.0-1@wsbu/stable', ('googletest/1.8.0-1@wsbu/testing', 'private')
 
     def configure(self):
         self.options['Boost'].shared = self.options.shared

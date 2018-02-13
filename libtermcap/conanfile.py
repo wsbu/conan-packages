@@ -6,8 +6,8 @@ from conans import ConanFile
 
 class libtermcapConan(ConanFile):
     name = 'libtermcap'
-    version = '2.0.8+1'
-    short_version = version.split('+')[0]
+    version = '2.0.8-1'
+    short_version = version.split('-')[0]
     url = 'https://github.com/wsbu/conan-packages'
     license = 'GNU'
     settings = 'os', 'compiler', 'build_type', 'arch'

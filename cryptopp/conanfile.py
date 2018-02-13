@@ -5,8 +5,8 @@ import os
 
 class CryptoPPConan(ConanFile):
     name = 'cryptopp'
-    version = '5.6.5+1'
-    cryptopp_version = version.split('+')[0]
+    version = '5.6.5-1'
+    cryptopp_version = version.split('-')[0]
     url = 'https://github.com/wsbu/conan-packages'
     description = 'Crypto++ Library is a free C++ class library of cryptographic schemes.'
     settings = 'os', 'compiler', 'build_type', 'arch'

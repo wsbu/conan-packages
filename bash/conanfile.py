@@ -6,8 +6,8 @@ from conans import ConanFile, tools, AutoToolsBuildEnvironment
 
 class BashConan(ConanFile):
     name = 'bash'
-    version = '3.2+1'
-    short_version = version.split('+')[0]
+    version = '3.2-1'
+    short_version = version.split('-')[0]
     url = 'https://github.com/wsbu/conan-packages'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'GNU'
@@ -68,7 +68,7 @@ class BashConan(ConanFile):
     default_options += ['%s=False' % package for package in optional_packages]
     default_options = tuple(default_options)
 
-    requires = 'libtermcap/2.0.8+1@wsbu/stable'
+    requires = 'libtermcap/2.0.8-1@wsbu/testing'
 
     def source(self):
         self.run('git clone --depth 1 git@bitbucket.org:redlionstl/bash.git')

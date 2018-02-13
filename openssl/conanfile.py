@@ -8,8 +8,8 @@ import subprocess
 
 class OpenSSLConan(ConanFile):
     name = "OpenSSL"
-    version = "1.1.0g+1"
-    short_version = version.split('+')[0]
+    version = "1.1.0g-1"
+    short_version = version.split('-')[0]
     settings = "os", "compiler", "arch", "build_type"
     url = "https://github.com/wsbu/conan-packages"
     license = "The current OpenSSL licence is an 'Apache style' license: https://www.openssl.org/source/license.html"

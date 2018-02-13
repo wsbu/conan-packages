@@ -5,7 +5,7 @@ from conans import ConanFile, AutoToolsBuildEnvironment, tools
 
 class libpcapConan(ConanFile):
     name = 'libpcap'
-    version = '1.8.1+1'
+    version = '1.8.1-1'
     url = 'https://github.com/wsbu/conan-packages'
     description = 'the LIBpcap interface to various kernel packet capture mechanism'
     settings = 'os', 'compiler', 'build_type', 'arch'
@@ -18,7 +18,7 @@ class libpcapConan(ConanFile):
     generators = 'cmake'
 
     def source(self):
-        version = self.version.split('+')[0]
+        version = self.version.split('-')[0]
         self.run('git clone --depth=1 https://github.com/the-tcpdump-group/libpcap -b libpcap-%s' % version)
 
     def build(self):

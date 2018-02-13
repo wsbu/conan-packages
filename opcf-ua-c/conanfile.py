@@ -4,8 +4,8 @@ from conans import ConanFile, CMake, tools
 
 class OpcfUaCConan(ConanFile):
     name = 'opcf-ua-c'
-    version = '1.03.341+1'
-    short_version = version.split('+')[0]
+    version = '1.03.341-1'
+    short_version = version.split('-')[0]
     url = 'https://github.com/wsbu/conan-packages'
     description = 'UA ANSI C Stack reference implementation for OPC UA'
     settings = 'os', 'compiler', 'build_type', 'arch'
@@ -16,7 +16,7 @@ class OpcfUaCConan(ConanFile):
     default_options = 'shared=True'
     generators = 'cmake'
 
-    requires = 'OpenSSL/1.1.0g+1@wsbu/stable'
+    requires = 'OpenSSL/1.1.0g-1@wsbu/testing'
 
     def configure(self):
         del self.settings.compiler.libcxx
