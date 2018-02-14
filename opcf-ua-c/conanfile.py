@@ -16,7 +16,7 @@ class OpcfUaCConan(ConanFile):
     default_options = 'shared=True'
     generators = 'cmake'
 
-    requires = 'OpenSSL/1.1.0g-1@wsbu/testing'
+    requires = 'OpenSSL/1.1.0g-1@wsbu/stable'
 
     def configure(self):
         del self.settings.compiler.libcxx
