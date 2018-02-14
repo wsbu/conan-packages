@@ -5,8 +5,7 @@ import os, sys
 
 class BoostConan(ConanFile):
     name = "boost"
-    version = "1.65.1-1"
-    short_version = version.split('-')[0]
+    version = "1.65.1"
     url = 'https://github.com/wsbu/conan-packages'
     license = "Boost Software License - Version 1.0. http://www.boost.org/LICENSE_1_0.txt"
 
@@ -121,7 +120,7 @@ class BoostConan(ConanFile):
             self.info.header_only()
 
     def source(self):
-        self.run('git clone --depth=1 git@bitbucket.org:redlionstl/boost.git -b v' + self.short_version)
+        self.run('git clone --depth=1 git@bitbucket.org:redlionstl/boost.git -b v' + self.version)
 
     def build(self):
         if self.options.header_only:

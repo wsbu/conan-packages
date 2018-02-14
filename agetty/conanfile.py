@@ -6,8 +6,7 @@ from conans import ConanFile, tools
 
 class AgettyConan(ConanFile):
     name = 'agetty'
-    version = '1.29-1'
-    short_version = version.split('-')[0]
+    version = '1.29'
     url = 'https://github.com/wsbu/conan-packages'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'GNU'
@@ -30,7 +29,7 @@ class AgettyConan(ConanFile):
 
     @property
     def relative_folder(self):
-        return os.path.join(self.name, self.name + '-' + self.short_version)
+        return os.path.join(self.name, self.name + '-' + self.version)
 
     @property
     def folder(self):

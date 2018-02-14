@@ -4,7 +4,7 @@ from conans import ConanFile, CMake, tools
 
 class CryptoPPConan(ConanFile):
     name = 'googletest'
-    version = '1.8.0-1'
+    version = '1.8.0'
     url = 'https://github.com/wsbu/conan-packages'
     description = "Google's C++ test framework."
     settings = 'os', 'compiler', 'build_type', 'arch'
@@ -17,7 +17,7 @@ class CryptoPPConan(ConanFile):
     generators = 'cmake'
 
     def source(self):
-        self.run('git clone --depth=1 https://github.com/google/googletest.git -b release-1.8.0')
+        self.run('git clone --depth=1 https://github.com/google/googletest.git -b release-' + self.version)
 
     def build(self):
         source_dir = os.path.join(self.build_folder, 'googletest')

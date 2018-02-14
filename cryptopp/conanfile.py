@@ -5,8 +5,7 @@ import os
 
 class CryptoPPConan(ConanFile):
     name = 'cryptopp'
-    version = '5.6.5-1'
-    cryptopp_version = version.split('-')[0]
+    version = '5.6.5'
     url = 'https://github.com/wsbu/conan-packages'
     description = 'Crypto++ Library is a free C++ class library of cryptographic schemes.'
     settings = 'os', 'compiler', 'build_type', 'arch'
@@ -17,7 +16,7 @@ class CryptoPPConan(ConanFile):
     }
     default_options = 'cxx11=True'
 
-    ARCHIVE_BASENAME = name.upper() + '_' + cryptopp_version.replace('.', '_')
+    ARCHIVE_BASENAME = name.upper() + '_' + version.replace('.', '_')
     FOLDER = name + '-' + ARCHIVE_BASENAME
 
     def source(self):

@@ -7,7 +7,7 @@ from conans import ConanFile, tools
 
 class BusyboxConan(ConanFile):
     name = 'busybox'
-    version = '1.24.2-1'
+    version = '1.24.2'
     license = 'GNU GPL'
     url = 'https://github.com/wsbu/conan-packages'
     description = "Swiss army knife of embedded Linux"
@@ -57,10 +57,9 @@ class BusyboxConan(ConanFile):
                              stdout=subprocess.PIPE)
         stdout = p.communicate()[0]
         make_version = stdout.decode().strip()
-        conan_version = self.version.split('-')[0]  # Strip Conan's recipe version
         error_msg = 'Version from build system should match Conan version: Make={0}, Conan={1}' \
-            .format(make_version, conan_version)
-        assert make_version == conan_version, error_msg
+            .format(make_version, self.version)
+        assert make_version == self.version, error_msg
 
     def _get_make_flags(self):
         flags = ['ARCH={0}'.format(self.ARCHITECTURE_MAP[self.settings.get_safe('arch')])]

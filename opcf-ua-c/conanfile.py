@@ -4,8 +4,7 @@ from conans import ConanFile, CMake, tools
 
 class OpcfUaCConan(ConanFile):
     name = 'opcf-ua-c'
-    version = '1.03.341-1'
-    short_version = version.split('-')[0]
+    version = '1.03.341'
     url = 'https://github.com/wsbu/conan-packages'
     description = 'UA ANSI C Stack reference implementation for OPC UA'
     settings = 'os', 'compiler', 'build_type', 'arch'
@@ -23,8 +22,7 @@ class OpcfUaCConan(ConanFile):
         super(OpcfUaCConan, self).configure()
 
     def source(self):
-        self.run('git clone --depth=1 git@bitbucket.org:redlionstl/{0}.git -b {1}'
-                 .format(self.name, self.short_version))
+        self.run('git clone --depth=1 git@bitbucket.org:redlionstl/{0}.git -b {1}'.format(self.name, self.version))
 
     def build(self):
         source_dir = os.path.join(self.build_folder, self.name)

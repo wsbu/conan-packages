@@ -6,8 +6,7 @@ from conans import ConanFile, tools, AutoToolsBuildEnvironment
 
 class BashConan(ConanFile):
     name = 'bash'
-    version = '3.2-1'
-    short_version = version.split('-')[0]
+    version = '3.2'
     url = 'https://github.com/wsbu/conan-packages'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'GNU'
@@ -129,4 +128,4 @@ class BashConan(ConanFile):
 
     @property
     def folder(self):
-        return os.path.join(self.build_folder, 'bash', 'bash-' + self.short_version)
+        return os.path.join(self.build_folder, 'bash', 'bash-' + self.version)

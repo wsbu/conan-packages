@@ -6,8 +6,7 @@ from conans import ConanFile, tools
 
 class ArptablesConan(ConanFile):
     name = 'arptables'
-    version = '0.0.4-1'
-    short_version = version.split('-')[0]
+    version = '0.0.4'
     url = 'https://github.com/wsbu/conan-packages'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'GNU'

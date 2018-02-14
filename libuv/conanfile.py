@@ -4,7 +4,7 @@ from conans import ConanFile, AutoToolsBuildEnvironment, tools
 
 class libuvConan(ConanFile):
     name = 'libuv'
-    version = '1.18.0-1'
+    version = '1.18.0'
     url = 'https://github.com/wsbu/conan-packages'
     description = "Cross-platform asynchronous I/O"
     settings = 'os', 'compiler', 'build_type', 'arch'

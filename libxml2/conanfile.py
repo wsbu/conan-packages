@@ -6,7 +6,7 @@ from conans import ConanFile, tools, AutoToolsBuildEnvironment
 
 class libxml2Conan(ConanFile):
     name = 'libxml2'
-    version = '2.9.7-1'
+    version = '2.9.7'
     url = 'https://github.com/wsbu/conan-packages'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'MIT'
@@ -17,7 +17,7 @@ class libxml2Conan(ConanFile):
     }
     default_options = 'shared=True', 'with_python=False', 'with_zlib=True'
 
-    FOLDER = name + '-' + version.split('-')[0]
+    FOLDER = name + '-' + version
     ARCHIVE = FOLDER + '.tar.gz'
 
     def configure(self):

@@ -6,15 +6,14 @@ from conans import ConanFile
 
 class libtermcapConan(ConanFile):
     name = 'libtermcap'
-    version = '2.0.8-1'
-    short_version = version.split('-')[0]
+    version = '2.0.8'
     url = 'https://github.com/wsbu/conan-packages'
     license = 'GNU'
     settings = 'os', 'compiler', 'build_type', 'arch'
     options = {'shared': [True, False]}
     default_options = 'shared=True'
 
-    relative_source = os.path.join(name, 'termcap-' + short_version)
+    relative_source = os.path.join(name, 'termcap-' + version)
 
     def source(self):
         self.run('git clone --depth=1 git@bitbucket.org:redlionstl/libtermcap.git')
@@ -24,9 +23,9 @@ class libtermcapConan(ConanFile):
 
     def package(self):
         if self.options.shared:
-            os.symlink('libtermcap.so.' + self.short_version,
-                       os.path.join(self.folder, 'libtermcap.so.' + self.short_version.split('.')[0]))
-            os.symlink('libtermcap.so.' + self.short_version, os.path.join(self.folder, 'libtermcap.so'))
+            os.symlink('libtermcap.so.' + self.version,
+                       os.path.join(self.folder, 'libtermcap.so.' + self.version.split('.')[0]))
+            os.symlink('libtermcap.so.' + self.version, os.path.join(self.folder, 'libtermcap.so'))
             self.copy('*so*', dst='usr/lib', src=self.relative_source)
         else:
             self.copy('*a*', dst='usr/lib', src=self.relative_source)
