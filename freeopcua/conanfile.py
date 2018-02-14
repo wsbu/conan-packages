@@ -21,7 +21,7 @@ class freeopcuaConan(ConanFile):
                       'build_server=True'
     generators = 'cmake'
 
-    requires = 'boost/1.65.1-1@wsbu/stable', ('googletest/1.8.0-1@wsbu/stable', 'private')
+    requires = 'boost/1.65.1@wsbu/stable', ('googletest/1.8.0@wsbu/stable', 'private')
 
     def configure(self):
         self.options['Boost'].shared = self.options.shared

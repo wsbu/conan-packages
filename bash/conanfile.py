@@ -67,7 +67,7 @@ class BashConan(ConanFile):
     default_options += ['%s=False' % package for package in optional_packages]
     default_options = tuple(default_options)
 
-    requires = 'libtermcap/2.0.8-1@wsbu/stable'
+    requires = 'libtermcap/2.0.8@wsbu/stable'
 
     def source(self):
         self.run('git clone --depth 1 git@bitbucket.org:redlionstl/bash.git')
