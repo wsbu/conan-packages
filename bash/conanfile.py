@@ -80,17 +80,14 @@ class BashConan(ConanFile):
 
         args = ['--prefix', '/usr']
         for feature in self.default_on_features:
-            if not self.options.__getitem__(feature):
-                feature_name = feature.replace('_', '-')
-                args.append('--disable-' + feature_name)
+            if not self.options.__getattr__(feature):
+                args.append('--disable-' + feature.replace('_', '-'))
         for feature in self.default_off_features:
-            if self.options.__getitem__(feature):
-                feature_name = feature.replace('_', '-')
-                args.append('--enable-' + feature_name)
+            if self.options.__getattr__(feature):
+                args.append('--enable-' + feature.replace('_', '-'))
         for package in self.optional_packages:
-            optional = '' if self.options.__getitem__(package) else 'out'
-            package_name = package.replace('_', '-')
-            args.append('--with{0}-{1}'.format(optional, package_name))
+            optional = '' if self.options.__getattr__(package) else 'out'
+            args.append('--with{0}-{1}'.format(optional, package.replace('_', '-')))
 
         shutil.copy2(os.path.join(self.build_folder, 'bash', 'config', 'config.guess'), os.path.join(self.folder))
         shutil.copy2(os.path.join(self.build_folder, 'bash', 'config', 'config.sub'), os.path.join(self.folder))
