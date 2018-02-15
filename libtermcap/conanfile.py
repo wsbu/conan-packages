@@ -26,7 +26,7 @@ class libtermcapConan(ConanFile):
             os.symlink('libtermcap.so.' + self.version,
                        os.path.join(self.folder, 'libtermcap.so.' + self.version.split('.')[0]))
             os.symlink('libtermcap.so.' + self.version, os.path.join(self.folder, 'libtermcap.so'))
-            self.copy('*so*', dst='usr/lib', src=self.relative_source)
+            self.copy('*so*', dst='usr/lib', src=self.relative_source, symlinks=True)
         else:
             self.copy('*a*', dst='usr/lib', src=self.relative_source)
         self.copy('*.h*', dst='usr/include', src=self.relative_source)

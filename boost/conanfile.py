@@ -317,13 +317,13 @@ class BoostConan(ConanFile):
         tools.save(filename, tools.load(filename) + contents)
 
     def package(self):
-        self.copy(pattern="*", dst="include/boost", src="%s/boost" % self.FOLDER_NAME)
-        self.copy(pattern="*.a", dst="lib", src="%s/stage/lib" % self.FOLDER_NAME)
-        self.copy(pattern="*.so", dst="lib", src="%s/stage/lib" % self.FOLDER_NAME)
-        self.copy(pattern="*.so.*", dst="lib", src="%s/stage/lib" % self.FOLDER_NAME)
-        self.copy(pattern="*.dylib*", dst="lib", src="%s/stage/lib" % self.FOLDER_NAME)
-        self.copy(pattern="*.lib", dst="lib", src="%s/stage/lib" % self.FOLDER_NAME)
-        self.copy(pattern="*.dll", dst="bin", src="%s/stage/lib" % self.FOLDER_NAME)
+        self.copy(pattern="*", dst="include/boost", src="%s/boost" % self.FOLDER_NAME, symlinks=True)
+        self.copy(pattern="*.a", dst="lib", src="%s/stage/lib" % self.FOLDER_NAME, symlinks=True)
+        self.copy(pattern="*.so", dst="lib", src="%s/stage/lib" % self.FOLDER_NAME, symlinks=True)
+        self.copy(pattern="*.so.*", dst="lib", src="%s/stage/lib" % self.FOLDER_NAME, symlinks=True)
+        self.copy(pattern="*.dylib*", dst="lib", src="%s/stage/lib" % self.FOLDER_NAME, symlinks=True)
+        self.copy(pattern="*.lib", dst="lib", src="%s/stage/lib" % self.FOLDER_NAME, symlinks=True)
+        self.copy(pattern="*.dll", dst="bin", src="%s/stage/lib" % self.FOLDER_NAME, symlinks=True)
 
         if not self.options.header_only and self.settings.compiler == "Visual Studio" and \
                 self.options.shared == "False":

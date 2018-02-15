@@ -40,7 +40,7 @@ conan_basic_setup()'''.format(self.build_folder))
         cmake.build()
 
     def package(self):
-        self.copy('*', src='build/lib', dst='lib')
+        self.copy('*', src='build/lib', dst='lib', symlinks=True)
         self.copy('*', src='build/bin', dst='bin')
         self.copy('*.h', src=self.name, dst='include')
 

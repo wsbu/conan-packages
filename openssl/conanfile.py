@@ -349,10 +349,10 @@ class OpenSSLConan(ConanFile):
                 self.run('make -C %s DESTDIR=%s install' % (self.subfolder, self.package_folder))
             else:
                 if self.options.shared:
-                    self.copy(pattern="*libcrypto*.dylib", dst="lib", keep_path=False)
-                    self.copy(pattern="*libssl*.dylib", dst="lib", keep_path=False)
-                    self.copy(pattern="*libcrypto.so*", dst="lib", keep_path=False)
-                    self.copy(pattern="*libssl.so*", dst="lib", keep_path=False)
+                    self.copy(pattern="*libcrypto*.dylib", dst="lib", keep_path=False, symlinks=True)
+                    self.copy(pattern="*libssl*.dylib", dst="lib", keep_path=False, symlinks=True)
+                    self.copy(pattern="*libcrypto.so*", dst="lib", keep_path=False, symlinks=True)
+                    self.copy(pattern="*libssl.so*", dst="lib", keep_path=False, symlinks=True)
                 else:
                     self.copy("*.a", "lib", keep_path=False)
                 self.copy(pattern="%s/include/*" % self.subfolder, dst="include/openssl/", keep_path=False)
