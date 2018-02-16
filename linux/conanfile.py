@@ -45,6 +45,9 @@ class LinuxConan(ConanFile):
         if self.settings.get_safe('arch') not in ['x86', 'x86_64']:
             self.run('make -C {0} -j{1} {2} {3} uImage'.format(self.folder, cpu_count, common_make_flags,
                                                                load_address_arg))
+            self.run('make -C {0} -j{1} {2} {3}'.format(self.folder, cpu_count, common_make_flags,
+                                                        ' '.join(self._get_dtb_files(platform))))
+
         self.run('make -C {0} -j{1} {2} modules'.format(self.folder, cpu_count, common_make_flags))
 
         # After compiling everything, copy the source code and object files into the package.
@@ -96,6 +99,19 @@ class LinuxConan(ConanFile):
         if tools.cross_building(self.settings):
             flags.append('CROSS_COMPILE={0}'.format(os.environ['CC'][:-3]))
         return ' '.join(flags)
+
+    def _get_dtb_files(self, platform):
+        return {
+            'sitara': ['sxni-am43xx_cpu9.dtb', 'sxni-am43xx_cpu9_reversed.dtb'],
+            'colorado': [
+                'sxni-am43xx_colorado.dtb',
+                'sxni-am43xx_colorado_rs485.dtb',
+                'sxni-am43xx_colorado_7.dtb',
+                'sxni-am43xx_colorado_7_rs485.dtb',
+                'sxni-am43xx_colorado_10.dtb',
+                'sxni-am43xx_colorado_10_rs485.dtb'
+            ]
+        }.get(platform, [platform + '.dtb'])
 
     @property
     def relative_folder(self):
