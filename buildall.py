@@ -77,7 +77,7 @@ def get_options(d):
             json_content = json.loads(options_file.read())
         extra_args = []
         for k, v in json_content.items():
-            extra_args += ['--options', '{0}={1}'.format(k, v)]
+            extra_args += ['--options', '{0}:{1}={2}'.format(d, k, v)]
         return extra_args
     else:
         return []
