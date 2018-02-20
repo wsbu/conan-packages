@@ -85,8 +85,8 @@ class BashConan(ConanFile):
             if self.options.__getattr__(feature):
                 args.append('--enable-' + feature.replace('_', '-'))
         for package in self.optional_packages:
-            optional = '' if self.options.__getattr__(package) else 'out'
-            args.append('--with{0}-{1}'.format(optional, package.replace('_', '-')))
+            optional = '' if self.options.__getattr__(package) else '=no'
+            args.append('--{0}{1}'.format(package.replace('_', '-'), optional))
 
         shutil.copy2(os.path.join(self.build_folder, 'bash', 'config', 'config.guess'), os.path.join(self.folder))
         shutil.copy2(os.path.join(self.build_folder, 'bash', 'config', 'config.sub'), os.path.join(self.folder))
@@ -116,7 +116,7 @@ class BashConan(ConanFile):
 
         src_license = os.path.join(self.folder, 'COPYING')
         license_folder = os.path.join(self.package_folder, 'etc', 'license')
-        dst_license = os.path.join(license_folder, 'bash')
+        dst_license = os.path.join(license_folder, self.name)
         os.makedirs(license_folder)
         shutil.copy2(src_license, dst_license)
 

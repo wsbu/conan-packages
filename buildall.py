@@ -13,6 +13,8 @@ import os
 import subprocess
 import sys
 
+PACKAGE_OPTIONS_FILE_NAME = 'options.json'
+
 try:
     from shutil import which
 except ImportError:
@@ -69,7 +71,7 @@ def get_conan_exe_args():
 
 
 def get_options(d):
-    options_filename = os.path.join(d, 'options.json')
+    options_filename = os.path.join(d, PACKAGE_OPTIONS_FILE_NAME)
     if os.path.exists(options_filename):
         with open(options_filename, 'r') as options_file:
             json_content = json.loads(options_file.read())

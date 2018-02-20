@@ -1,0 +1,7 @@
+{
+  "alias": true,
+  "job_control": true,
+  "disabled_builtins": true,
+  "nls": false,
+  "with_bash_malloc": false
+}
