@@ -7,7 +7,7 @@ from conans import ConanFile, tools
 
 class LinuxConan(ConanFile):
     name = 'linux'
-    version = '4.4.36'
+    version = '4.9.59'
     license = 'GNU GPL'
     url = 'https://github.com/wsbu/conan-packages'
     description = "Kernel modules and headers (and maybe source)"
