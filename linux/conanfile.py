@@ -27,7 +27,7 @@ class LinuxConan(ConanFile):
     }
 
     def source(self):
-        self.run('git clone --depth=1 git@bitbucket.org:redlionstl/mbl-sw-nt24k-linux-kernel')
+        self.run('git clone --depth=1 git@bitbucket.org:redlionstl/mbl-sw-nt24k-linux-kernel -b wsbu-ti-4.9.59')
 
     def build(self):
         # Without this, the kernel thinks that the source has been modified and tries to append a '+' to the version
