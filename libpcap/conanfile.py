@@ -26,7 +26,7 @@ class libpcapConan(ConanFile):
         os.mkdir(build_dir)
 
         args = [
-            '--prefix', '/',
+            '--prefix=/',
             '--with-pcap=' + self.settings.get_safe('os').lower(),
             '--with%s-libnl' % ('' if self.options.with_libnl else 'out')
         ]

@@ -45,7 +45,7 @@ class libxml2Conan(ConanFile):
         os.mkdir(build_dir)
 
         args = [
-            '--prefix', '/',
+            '--prefix=/',
             '--with-python=yes' if self.options.with_python else '--without-python',
             '--with-zlib=yes' if self.options.with_zlib else '--without-zlib'
         ]

@@ -37,7 +37,7 @@ class libpcapConan(ConanFile):
         build_dir = os.path.join(self.build_folder, 'build')
         os.mkdir(build_dir)
 
-        args = ['--prefix', '/']
+        args = ['--prefix=/']
         for feature in self.default_on_features:
             if not self.options.__getattr__(feature):
                 args.append('--disable-' + feature.replace('_', '-'))

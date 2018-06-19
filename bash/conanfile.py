@@ -77,7 +77,7 @@ class BashConan(ConanFile):
         extra_flags = ['-I%s' % include_dir for include_dir in self.deps_cpp_info['libtermcap'].includedirs]
         os.environ['CPPFLAGS'] = starting_flags + ' ' + ' '.join(extra_flags)
 
-        args = ['--prefix', '/usr']
+        args = ['--prefix=/usr']
         for feature in self.default_on_features:
             if not self.options.__getattr__(feature):
                 args.append('--disable-' + feature.replace('_', '-'))

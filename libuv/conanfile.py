@@ -25,7 +25,7 @@ class libuvConan(ConanFile):
         self.run('sh {0}/autogen.sh'.format(source_dir))
 
         with tools.chdir(build_dir):
-            env.configure(configure_dir=source_dir, args=['--prefix', '/'])
+            env.configure(configure_dir=source_dir, args=['--prefix=/'])
         env.make(args=['-C', build_dir])
 
     def package(self):
