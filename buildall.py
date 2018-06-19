@@ -58,7 +58,7 @@ def run():
             package = this_project.split('@')[0]
 
             execute(conan_exe_args + ['create', d, CHANNEL, '--build', 'missing', '--build', 'outdated', '--update']
-                    + get_options(d))
+                    + get_options(d) + sys.argv[1:])
             execute(conan_exe_args + ['upload', '--force', '--confirm', '--remote', 'ci', '--all', package + '@' +
                                       CHANNEL])
 
