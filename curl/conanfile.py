@@ -33,7 +33,7 @@ class CurlConan(ConanFile):
         if self.options.with_zlib:
             self.requires("zlib/1.2.11@conan/stable")
         if self.options.with_ssl:
-            self.requires("OpenSSL/1.0.2n@conan/stable")
+            self.requires("OpenSSL/1.0.2o@conan/stable")
         if self.options.with_axtls:
             raise Exception('axtls not supported')
 
