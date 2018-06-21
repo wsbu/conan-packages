@@ -11,7 +11,7 @@ class CurlTestConan(ConanFile):
         cmake.build()
 
     def test(self):
-            self.run('ctest --output-on-failure')
+        self.run('ctest --output-on-failure')
 
     def configure(self):
         del self.settings.compiler.libcxx
