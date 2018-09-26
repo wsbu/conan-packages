@@ -50,15 +50,16 @@ def run():
             if p.stdout:
                 print(p.stdout.read().decode())
             if p.stderr:
-                sys.stderr.write(p.stderr.read().decode())
+                sys.stderr.write(p.stderr.read().decode() + os.linesep)
             raise Exception('Process exited with non-zero return code: {0}'.format(return_code))
         else:
             lines = p.stdout.read().decode().split()
             this_project = [line for line in lines if line.endswith('@PROJECT')][0]
             package = this_project.split('@')[0]
 
-            execute(conan_exe_args + ['create', d, CHANNEL, '--build', 'missing', '--build', 'outdated', '--update']
-                    + get_options(d) + sys.argv[1:])
+            for config in get_options(d):
+                execute(conan_exe_args + ['create', d, CHANNEL, '--build', 'missing', '--build', 'outdated', '--update']
+                        + config + sys.argv[1:])
             execute(conan_exe_args + ['upload', '--force', '--confirm', '--remote', 'ci', '--all', package + '@' +
                                       CHANNEL])
 
@@ -75,12 +76,15 @@ def get_options(d):
     if os.path.exists(options_filename):
         with open(options_filename, 'r') as options_file:
             json_content = json.loads(options_file.read())
-        extra_args = []
-        for k, v in json_content.items():
-            extra_args += ['--options', '{0}:{1}={2}'.format(d, k, v)]
-        return extra_args
+        build_configs = []
+        for config in json_content:
+            extra_args = []
+            for k, v in config.items():
+                extra_args += ['--options', '{0}:{1}={2}'.format(d, k, v)]
+            build_configs.append(extra_args)
+        return build_configs
     else:
-        return []
+        return [[]]
 
 
 def execute(args, echo=True):
