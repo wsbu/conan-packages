@@ -4,7 +4,7 @@ from conans import ConanFile, CMake, tools
 
 class CryptoPPConan(ConanFile):
     name = 'googletest'
-    version = '1.8.0'
+    version = '1.8.1'
     url = 'https://github.com/wsbu/conan-packages'
     description = "Google's C++ test framework."
     settings = 'os', 'compiler', 'build_type', 'arch'
@@ -13,7 +13,7 @@ class CryptoPPConan(ConanFile):
         'shared': [True, False],
         'run_tests': [True, False]
     }
-    default_options = 'shared=True', 'run_tests=False'
+    default_options = 'shared=False', 'run_tests=False'
     generators = 'cmake'
 
     def source(self):
@@ -25,8 +25,8 @@ class CryptoPPConan(ConanFile):
 
         # Without this, CMake won't know how to find the dependencies that Conan is trying to inject
         # Also, set the `conan_output_dirs_setup()` macro to empty or else unit tests will fail
-        tools.replace_in_file(os.path.join(source_dir, 'CMakeLists.txt'), 'project( googletest-distribution )',
-                              '''project( googletest-distribution )
+        tools.replace_in_file(os.path.join(source_dir, 'CMakeLists.txt'), 'project(googletest-distribution)',
+                              '''project(googletest-distribution)
 include("{0}/conanbuildinfo.cmake")
 macro(conan_output_dirs_setup)
 endmacro()
@@ -53,9 +53,13 @@ conan_basic_setup()'''.format(self.build_folder))
         self.run('cmake --build {0} --target install -- DESTDIR={1}'.format(build_dir, self.package_folder))
 
     def package_info(self):
+        self.cpp_info.rootpath = os.path.join(self.package_folder, 'usr')
+        self.cpp_info.libdir = os.path.join(self.cpp_info.rootpath, 'lib')
+
+        lib_suffix = 'd' if self.settings.build_type == 'Debug' else ''
         self.cpp_info.libs = [
-            'gtest',
-            'gtest_main',
-            'gmock',
-            'gmock_main'
+            'gtest' + lib_suffix,
+            'gtest_main' + lib_suffix,
+            'gmock' + lib_suffix,
+            'gmock_main' + lib_suffix
         ]
