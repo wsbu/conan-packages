@@ -33,7 +33,7 @@ class libfcgi(ConanFile):
 
     def package(self):
         with tools.environment_append({'DESTDIR': self.package_folder}):
-            self.auto_tools_env.install(args=['-C', self.build_dir])
+            self.auto_tools_env.install(args=['-C', self.build_dir, '-j1'])
 
         src_license = os.path.join(self.source_folder, 'LICENSE.TERMS')
         license_folder = os.path.join(self.package_folder, 'etc', 'license')
