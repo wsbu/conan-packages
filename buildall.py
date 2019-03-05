@@ -62,6 +62,7 @@ def run():
                         + config + sys.argv[1:])
             execute(conan_exe_args + ['upload', '--force', '--confirm', '--remote', 'ci', '--all', package + '@' +
                                       CHANNEL])
+            execute(conan_exe_args + ['remove', '--force', package + '@' + CHANNEL])
 
 
 def get_conan_exe_args():
