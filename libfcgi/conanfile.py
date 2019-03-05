@@ -42,6 +42,7 @@ class libfcgi(ConanFile):
         shutil.copy2(src_license, dst_license)
 
     def package_info(self):
+        self.cpp_info.includedirs = [os.path.join('usr', 'include')]
         self.cpp_info.libdirs = [os.path.join('usr', 'lib')]
         self.cpp_info.libs = [
             'fcgi',
