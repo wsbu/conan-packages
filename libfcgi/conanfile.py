@@ -13,10 +13,6 @@ class libfcgi(ConanFile):
                   'without the limitations of server specific APIs.'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'FastCGI'
-    options = {
-        'shared': [True, False]
-    }
-    default_options = 'shared=True'
 
     scm = {
         'type': 'git',
