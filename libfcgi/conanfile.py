@@ -24,9 +24,6 @@ class libfcgi(ConanFile):
         'revision': 'RAM_4.28'
     }
 
-    def configure(self):
-        del self.settings.compiler.libcxx
-
     def build(self):
         os.mkdir(self.build_dir)
 
@@ -50,7 +47,10 @@ class libfcgi(ConanFile):
 
     def package_info(self):
         self.cpp_info.libdirs = [os.path.join('usr', 'lib')]
-        self.cpp_info.libs = ['fcgi']
+        self.cpp_info.libs = [
+            'fcgi',
+            'fcgi++'
+        ]
 
     @property
     def build_dir(self):
