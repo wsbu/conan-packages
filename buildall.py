@@ -57,6 +57,7 @@ def run():
             this_project = [line for line in lines if line.endswith('@PROJECT')][0]
             package = this_project.split('@')[0]
 
+            execute(conan_exe_args + ['download', '--remote', 'ci', package + '@' + CHANNEL])
             for config in get_options(d):
                 execute(conan_exe_args + ['create', d, CHANNEL, '--build', 'missing', '--build', 'outdated', '--update']
                         + config + sys.argv[1:])
