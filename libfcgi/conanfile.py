@@ -36,9 +36,10 @@ class libfcgi(ConanFile):
             self.auto_tools_env.install(args=['-C', self.build_dir, '-j1'])
 
         # DO NOT package libfcgi++ - it does not build reliably and therefore no one should use it
-        for e in os.listdir(os.path.join(self.package_folder, 'usr', 'lib')):
+        base_path = os.path.join(self.package_folder, 'usr', 'lib')
+        for e in os.listdir(base_path):
             if e.startswith('libfcgi++'):
-                os.remove(e)
+                os.remove(os.path.join(base_path, e))
 
         src_license = os.path.join(self.source_folder, 'LICENSE.TERMS')
         license_folder = os.path.join(self.package_folder, 'etc', 'license')
