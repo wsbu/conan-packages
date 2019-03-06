@@ -35,6 +35,11 @@ class libfcgi(ConanFile):
         with tools.environment_append({'DESTDIR': self.package_folder}):
             self.auto_tools_env.install(args=['-C', self.build_dir, '-j1'])
 
+        # DO NOT package libfcgi++ - it does not build reliably and therefore no one should use it
+        for e in os.listdir(os.path.join(self.package_folder, 'usr', 'lib')):
+            if e.startswith('libfcgi++'):
+                os.remove(e)
+
         src_license = os.path.join(self.source_folder, 'LICENSE.TERMS')
         license_folder = os.path.join(self.package_folder, 'etc', 'license')
         dst_license = os.path.join(license_folder, self.name)
@@ -42,12 +47,10 @@ class libfcgi(ConanFile):
         shutil.copy2(src_license, dst_license)
 
     def package_info(self):
+        self.cpp_info.bindirs = [os.path.join('usr', 'bin')]
         self.cpp_info.includedirs = [os.path.join('usr', 'include')]
         self.cpp_info.libdirs = [os.path.join('usr', 'lib')]
-        self.cpp_info.libs = [
-            'fcgi',
-            'fcgi++'
-        ]
+        self.cpp_info.libs = ['fcgi']
 
     @property
     def build_dir(self):
