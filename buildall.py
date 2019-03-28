@@ -58,7 +58,10 @@ def run():
             package = this_project.split('@')[0]
 
             if 'DOWNLOAD_PACKAGES' in os.environ:
-                execute(conan_exe_args + ['download', '--remote', 'ci', package + '@' + CHANNEL])
+                search_command = conan_exe_args + ['search', '--remote', 'ci', package + '@' + CHANNEL]
+                if 0 == subprocess.run(search_command).returncode:
+                    # Only attempt to download the binary if it exists on the remote
+                    execute(conan_exe_args + ['download', '--remote', 'ci', package + '@' + CHANNEL])
 
             for config in get_options(d):
                 execute(conan_exe_args + ['create', d, CHANNEL, '--build', 'missing', '--build', 'outdated', '--update']
