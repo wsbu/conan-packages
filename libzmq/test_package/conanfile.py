@@ -14,7 +14,7 @@ class ZeroMQTest(ConanFile):
 
     def test(self):
         self.cmake.test()
-        assert os.path.exists(os.path.join(self.deps_cpp_info["ZeroMQ"].bindirs[0], 'inproc_lat'))
+        assert os.path.exists(os.path.join(self.deps_cpp_info["libzmq"].bindirs[0], 'inproc_lat'))
 
     @property
     def cmake(self):

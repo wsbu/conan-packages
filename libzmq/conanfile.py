@@ -3,14 +3,14 @@ import os
 from conans import ConanFile, CMake
 
 
-class ZeroMQ(ConanFile):
-    name = 'ZeroMQ'
+class Libzmq(ConanFile):
+    name = 'libzmq'
     version = '4.2.0'
     url = 'https://github.com/wsbu/conan-packages'
     homepage = 'http://www.zeromq.org/'
     description = 'Lightweight messaging kernel'
     settings = 'os', 'compiler', 'build_type', 'arch'
-    license = 'LGPL-3.0'
+    license = 'MIT'
     options = {
         'enable_curve': [True, False],
         'enable_drafts': [True, False],
@@ -40,7 +40,7 @@ class ZeroMQ(ConanFile):
 
     scm = {
         'type': 'git',
-        'url': 'git@bitbucket.org:redlionstl/zeromq.git',
+        'url': 'git@bitbucket.org:redlionstl/libzmq.git',
         'revision': 'v' + version
     }
 
