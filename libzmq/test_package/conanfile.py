@@ -5,7 +5,7 @@ from conans import CMake, ConanFile
 
 class ZeroMQTest(ConanFile):
     settings = "os", "compiler", "arch", "build_type"
-    generators = "cmake_find_package"
+    generators = "cmake"
 
     def build(self):
         cmake = self.cmake
