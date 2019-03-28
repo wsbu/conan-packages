@@ -13,7 +13,7 @@ class libuvConan(ConanFile):
     default_options = 'shared=True'
 
     def source(self):
-        self.run('git clone --depth=1 https://github.com/libuv/libuv -b v1.18.0')
+        self.run('git clone --depth=1 https://github.com/libuv/libuv -b v{0}'.format(self.version))
 
     def build(self):
         source_dir = os.path.join(self.build_folder, 'libuv')
