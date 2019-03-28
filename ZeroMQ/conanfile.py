@@ -7,7 +7,8 @@ class ZeroMQ(ConanFile):
     name = 'ZeroMQ'
     version = '4.2.0'
     url = 'https://github.com/wsbu/conan-packages'
-    description = 'Open Source C++ OPC-UA Server and Client Library'
+    homepage = 'http://www.zeromq.org/'
+    description = 'Lightweight messaging kernel'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'LGPL-3.0'
     options = {
