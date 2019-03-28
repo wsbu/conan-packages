@@ -5,13 +5,14 @@ from conans import ConanFile, CMake
 
 class Libzmq(ConanFile):
     name = 'libzmq'
-    version = '4.2.0'
+    version = '4.3.1'
     url = 'https://github.com/wsbu/conan-packages'
     homepage = 'http://www.zeromq.org/'
     description = 'Lightweight messaging kernel'
     settings = 'os', 'compiler', 'build_type', 'arch'
     license = 'MIT'
     options = {
+        'shared': [True, False],
         'enable_curve': [True, False],
         'enable_drafts': [True, False],
         'enable_eventfd': [True, False],
@@ -24,6 +25,7 @@ class Libzmq(ConanFile):
         'zmq_build_tests': [True, False]
     }
     default_options = (
+        'shared=True',
         'enable_curve=True',
         'enable_drafts=True',
         'enable_eventfd=False',
@@ -55,13 +57,17 @@ class Libzmq(ConanFile):
         self.cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = [
-            'zmq', 'zmq-static'
-        ]
+        if self.options.shared:
+            lib = 'zmq'
+        else:
+            lib = 'zmq-static'
+        self.cpp_info.libs = [lib]
 
     @property
     def cmake(self):
         definitions = {
+            'BUILD_SHARED': 'ON' if self.options.shared else 'OFF',
+            'BUILD_STATIC': 'OFF' if self.options.shared else 'ON',
             'ENABLE_CURVE': 'ON' if self.options.enable_curve else 'OFF',
             'ENABLE_DRAFTS': 'ON' if self.options.enable_drafts else 'OFF',
             'ENABLE_EVENTFD': 'ON' if self.options.enable_eventfd else 'OFF',
