@@ -54,14 +54,19 @@ def run():
             raise Exception('Process exited with non-zero return code: {0}'.format(return_code))
         else:
             lines = p.stdout.read().decode().split()
-            this_project = [line for line in lines if line.endswith('@PROJECT')][0]
-            package = this_project.split('@')[0]
+            this_project = [line for line in lines if line.endswith('@PROJECT') or line.endswith('@None/None)')][0]
+            if this_project.startswith('conanfile.py'):
+                package = this_project.split()[1][1:].split('@')[0]
+            else:
+                package = this_project.split('@')[0]
 
             if 'DOWNLOAD_PACKAGES' in os.environ:
                 search_command = conan_exe_args + ['search', '--remote', 'ci', package + '@' + CHANNEL]
-                if 0 == subprocess.run(search_command).returncode:
-                    # Only attempt to download the binary if it exists on the remote
+                try:
+                    execute(search_command)
                     execute(conan_exe_args + ['download', '--remote', 'ci', package + '@' + CHANNEL])
+                except subprocess.CalledProcessError:
+                    pass  # It's okay if this fails - download is only supposed to happen if it exists on the remote
 
             for config in get_options(d):
                 execute(conan_exe_args + ['create', d, CHANNEL, '--build', 'missing', '--build', 'outdated', '--update']
