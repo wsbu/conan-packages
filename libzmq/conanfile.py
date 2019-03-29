@@ -55,7 +55,7 @@ class Libzmq(ConanFile):
         self.cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = ['zmq', 'zmq-static']
+        self.cpp_info.libs = ['zmq']
 
     @property
     def cmake(self):
