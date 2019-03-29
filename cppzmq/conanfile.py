@@ -40,7 +40,9 @@ find_package(ZeroMQ QUIET)'''.format(self.build_folder))
 
         cmake = self.cmake
         cmake.build()
-        if self.options.cppzmq_build_tests:
+
+        # Tests seem to be flaky when cross-compiled & emulated
+        if self.options.cppzmq_build_tests and not tools.cross_building:
             cmake.test()
 
     def package(self):
