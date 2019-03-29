@@ -1,6 +1,6 @@
 import os
 
-from conans import ConanFile, CMake
+from conans import ConanFile, CMake, tools
 
 
 class Libzmq(ConanFile):
@@ -47,7 +47,11 @@ class Libzmq(ConanFile):
     def build(self):
         cmake = self.cmake
         cmake.build()
-        if self.options.zmq_build_tests:
+
+        # There is a bug in, at very least, the test_hwm_pubsub executable: https://github.com/zeromq/jeromq/issues/701
+        must_skip_tests = self.settings.build_type == 'Debug' and self.settings.arch == 'armv7hf'
+
+        if self.options.zmq_build_tests and not must_skip_tests:
             cmake.parallel = False
             cmake.test()
 
