@@ -27,7 +27,7 @@ class Libzmq(ConanFile):
     default_options = (
         'shared=True',
         'enable_curve=True',
-        'enable_drafts=True',
+        'enable_drafts=False',
         'enable_eventfd=False',
         'poller=autodetect',
         'with_sodium=False',
