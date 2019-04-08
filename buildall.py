@@ -58,7 +58,7 @@ def run():
             if this_project.startswith('conanfile.py'):
                 package = this_project.split()[1][1:].split('@')[0]
             else:
-                package = this_project.split('@')[0]
+                package = this_project.split('@')[0][1:]
 
             if package.startswith('('):
                 raise Exception('WOH THERE! Not so fast! Gotta fix that project name: `{}`. Full line = `{}`.'.format(
