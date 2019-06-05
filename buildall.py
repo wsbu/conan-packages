@@ -60,6 +60,11 @@ def run():
             else:
                 package = this_project.split('@')[0]
 
+            if package.startswith('('):
+                raise Exception('WOH THERE! Not so fast! Gotta fix that project name: `{}`. Full line = `{}`.'.format(
+                    package, this_project
+                ))
+
             if 'DOWNLOAD_PACKAGES' in os.environ:
                 search_command = conan_exe_args + ['search', '--remote', 'ci', package + '@' + CHANNEL]
                 try:
