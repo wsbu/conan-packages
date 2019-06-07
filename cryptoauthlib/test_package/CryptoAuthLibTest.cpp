@@ -8,7 +8,7 @@ static const string EXPECTED_VERSION = "20190304";
 
 int main () {
     char actualVersion[32];
-    const auto status = atcab_version(actualVersion);
+    const ATCA_STATUS status = atcab_version(actualVersion);
 
     if (status) {
         return status;
