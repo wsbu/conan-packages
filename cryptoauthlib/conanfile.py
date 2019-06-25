@@ -56,7 +56,8 @@ class CryptoAuthLib(ConanFile):
             'include',
             os.path.join('include', 'hal'),
             os.path.join('include', 'basic'),
-            os.path.join('include', 'crypto')
+            os.path.join('include', 'crypto'),
+            os.path.join('include', 'atcacert')
         ]
 
     @property
