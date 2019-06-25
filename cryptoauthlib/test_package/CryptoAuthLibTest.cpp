@@ -4,7 +4,7 @@
 
 using namespace std;
 
-static const string EXPECTED_VERSION = "20190304";
+static const string EXPECTED_VERSION = "20190517";
 
 int main () {
     char actualVersion[32];

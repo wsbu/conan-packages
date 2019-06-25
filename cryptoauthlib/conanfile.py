@@ -5,7 +5,7 @@ from conans import ConanFile, CMake
 
 class CryptoAuthLib(ConanFile):
     name = 'cryptoauthlib'
-    version = '20190304'
+    version = '20190517'
     url = 'https://github.com/wsbu/conan-packages'
     homepage = 'https://github.com/MicrochipTech/cryptoauthlib'
     description = 'Library for interacting with the Crypto Authentication secure elements.'
