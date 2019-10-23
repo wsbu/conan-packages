@@ -26,6 +26,7 @@ except ImportError:
         return None
 
 CHANNEL = 'wsbu/stable'
+CONAN_REMOTE = os.environ.get('CONAN_REMOTE', 'rlc')
 
 
 def run():
@@ -34,6 +35,7 @@ def run():
     root = os.path.dirname(os.path.abspath(__file__))
     directories = [os.path.join(root, d) for d in os.listdir(root) if os.path.isdir(d)]
     conan_dirs = [os.path.abspath(d) for d in directories if os.path.exists(os.path.join(d, 'conanfile.py'))]
+
 
     conan_exe_args = get_conan_exe_args()
 
@@ -66,17 +68,17 @@ def run():
                 ))
 
             if 'DOWNLOAD_PACKAGES' in os.environ:
-                search_command = conan_exe_args + ['search', '--remote', 'ci', package + '@' + CHANNEL]
+                search_command = conan_exe_args + ['search', '--remote', CONAN_REMOTE, package + '@' + CHANNEL]
                 try:
                     execute(search_command)
-                    execute(conan_exe_args + ['download', '--remote', 'ci', package + '@' + CHANNEL])
+                    execute(conan_exe_args + ['download', '--remote', CONAN_REMOTE, package + '@' + CHANNEL])
                 except subprocess.CalledProcessError:
                     pass  # It's okay if this fails - download is only supposed to happen if it exists on the remote
 
             for config in get_options(d):
                 execute(conan_exe_args + ['create', d, CHANNEL, '--build', 'missing', '--build', 'outdated', '--update']
                         + config + sys.argv[1:])
-            execute(conan_exe_args + ['upload', '--force', '--confirm', '--remote', 'ci', '--all', package + '@' +
+            execute(conan_exe_args + ['upload', '--force', '--confirm', '--remote', CONAN_REMOTE, '--all', package + '@' +
                                       CHANNEL])
 
             if 'REMOVE_PACKAGES' in os.environ:
