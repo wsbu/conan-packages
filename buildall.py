@@ -36,7 +36,6 @@ def run():
     directories = [os.path.join(root, d) for d in os.listdir(root) if os.path.isdir(d)]
     conan_dirs = [os.path.abspath(d) for d in directories if os.path.exists(os.path.join(d, 'conanfile.py'))]
 
-
     conan_exe_args = get_conan_exe_args()
 
     for d in conan_dirs:
@@ -44,45 +43,51 @@ def run():
         print('### Building {0}'.format(os.path.basename(d)))
         print('#' * 80)
 
-        args = conan_exe_args + ['info', d, '--only', 'None']
-        print(args)
-        p = subprocess.Popen(args, stdout=subprocess.PIPE)
-        return_code = p.wait()
-        if 0 != return_code:
-            if p.stdout:
-                print(p.stdout.read().decode())
-            if p.stderr:
-                sys.stderr.write(p.stderr.read().decode() + os.linesep)
-            raise Exception('Process exited with non-zero return code: {0}'.format(return_code))
-        else:
-            lines = [line.strip() for line in p.stdout.read().decode().split('\n')]
-            this_project = [line for line in lines if line.endswith('@PROJECT') or line.endswith('@None/None)')][0]
-            if this_project.startswith('conanfile.py'):
-                package = this_project.split()[1][1:].split('@')[0]
-            else:
-                package = this_project.split('@')[0][1:]
+        build_package(conan_exe_args, d)
 
-            if package.startswith('('):
-                raise Exception('WOH THERE! Not so fast! Gotta fix that project name: `{}`. Full line = `{}`.'.format(
-                    package, this_project
-                ))
 
-            if 'DOWNLOAD_PACKAGES' in os.environ:
-                search_command = conan_exe_args + ['search', '--remote', CONAN_REMOTE, package + '@' + CHANNEL]
-                try:
-                    execute(search_command)
-                    execute(conan_exe_args + ['download', '--remote', CONAN_REMOTE, package + '@' + CHANNEL])
-                except subprocess.CalledProcessError:
-                    pass  # It's okay if this fails - download is only supposed to happen if it exists on the remote
+def build_package(conan_exe_args, directory):
+    args = conan_exe_args + ['info', directory, '--only', 'None']
+    print(args)
+    p = subprocess.Popen(args, stdout=subprocess.PIPE)
+    return_code = p.wait()
+    if 0 != return_code:
+        if p.stdout:
+            print(p.stdout.read().decode())
+        if p.stderr:
+            sys.stderr.write(p.stderr.read().decode() + os.linesep)
+        raise Exception('Process exited with non-zero return code: {0}'.format(return_code))
+    else:
+        lines = [line.strip() for line in p.stdout.read().decode().split('\n')]
+        package = get_package_name(lines[0].strip())
 
-            for config in get_options(d):
-                execute(conan_exe_args + ['create', d, CHANNEL, '--build', 'missing', '--build', 'outdated', '--update']
-                        + config + sys.argv[1:])
-            execute(conan_exe_args + ['upload', '--force', '--confirm', '--remote', CONAN_REMOTE, '--all', package + '@' +
-                                      CHANNEL])
+        if 'DOWNLOAD_PACKAGES' in os.environ:
+            search_command = conan_exe_args + ['search', '--remote', CONAN_REMOTE, package + '@' + CHANNEL]
+            try:
+                execute(search_command)
+                execute(conan_exe_args + ['download', '--remote', CONAN_REMOTE, package + '@' + CHANNEL])
+            except subprocess.CalledProcessError:
+                pass  # It's okay if this fails - download is only supposed to happen if it exists on the remote
 
-            if 'REMOVE_PACKAGES' in os.environ:
-                execute(conan_exe_args + ['remove', '--force', package + '@' + CHANNEL])
+        for config in get_options(directory):
+            execute(conan_exe_args + ['create', directory, CHANNEL, '--update'] + config + sys.argv[1:])
+        # execute(conan_exe_args + ['upload', '--force', '--confirm', '--remote', CONAN_REMOTE, '--all', package + '@' +
+        #                           CHANNEL])
+
+        if 'REMOVE_PACKAGES' in os.environ:
+            execute(conan_exe_args + ['remove', '--force', package + '@' + CHANNEL])
+
+
+def get_package_name(package_line):
+    if package_line.startswith('conanfile.py'):
+        package = package_line.split()[1][1:-1].split('@')[0]
+    else:
+        package = package_line.split('@')[0][1:]
+    if package.startswith('('):
+        raise Exception('WOH THERE! Not so fast! Gotta fix that project name: `{}`. Full line = `{}`.'.format(
+            package, package_line
+        ))
+    return package
 
 
 def get_conan_exe_args():
